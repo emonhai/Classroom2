@@ -63,12 +63,12 @@
     <div id="setup-container">
         <h1>Workspace Engine</h1>
         <p style="color: #5f6368; font-size: 14px; margin-bottom: 25px;">
-            Select a localized environment file (.sfc, .smc, .zip) to initialize the workspace player.
+            Select a localized environment file (.gba, .zip) to initialize the workspace player.
         </p>
         <label class="file-input-label" for="rom-file">
             Load Local File
         </label>
-        <input type="file" id="rom-file" accept=".sfc,.smc,.zip">
+        <input type="file" id="rom-file" accept=".gba,.zip">
     </div>
 
     <div id="emulator-inside">
@@ -77,7 +77,6 @@
 
     <script>
         // 1. Emergency Panic Switch Logic
-        // Pressing the tilde key (~) immediately replaces the window destination
         document.addEventListener('keydown', function(event) {
             if (event.key === '~') {
                 window.location.replace('https://classroom.google.com');
@@ -91,20 +90,18 @@
 
             const reader = new FileReader();
             
-            // Read the file structure into a temporary local data URL
             reader.onload = function(e) {
                 const romDataUrl = e.target.result;
                 
-                // Hide setup UI and expose emulator container
                 document.getElementById('setup-container').classList.add('hidden');
                 document.getElementById('emulator-inside').style.display = 'block';
                 
                 // Initialize EmulatorJS variables globally
                 window.EJS_player = '#game';
-                window.EJS_core = 'snes'; // Targets the Super Nintendo core engine
-                window.EJS_gameUrl = romDataUrl; // Passes the client-side data locally
+                // CHANGED: Core set to 'gba' to load the Game Boy Advance engine
+                window.EJS_core = 'gba'; 
+                window.EJS_gameUrl = romDataUrl; 
                 
-                // Fetch the CDN deployment scripts for the structural engine
                 window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
                 
                 const script = document.createElement('script');
